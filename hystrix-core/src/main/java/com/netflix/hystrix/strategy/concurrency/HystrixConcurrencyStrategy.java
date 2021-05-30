@@ -52,6 +52,8 @@ public abstract class HystrixConcurrencyStrategy {
     private final static Logger logger = LoggerFactory.getLogger(HystrixConcurrencyStrategy.class);
 
     /**
+     * 该方法已经未在使用（估计废弃），逻辑上 {@link #getThreadPool(HystrixThreadPoolKey, HystrixThreadPoolProperties)} 类似。
+     *
      * Factory method to provide {@link ThreadPoolExecutor} instances as desired.
      * <p>
      * Note that the corePoolSize, maximumPoolSize and keepAliveTime values will be dynamically set during runtime if their values change using the {@link ThreadPoolExecutor#setCorePoolSize},

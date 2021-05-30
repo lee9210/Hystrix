@@ -35,7 +35,9 @@ import org.slf4j.LoggerFactory;
 public class HystrixRequestVariableHolder<T> {
 
     static final Logger logger = LoggerFactory.getLogger(HystrixRequestVariableHolder.class);
-
+    /**
+     * 请求缓存集合
+     */
     private static ConcurrentHashMap<RVCacheKey, HystrixRequestVariable<?>> requestVariableInstance = new ConcurrentHashMap<RVCacheKey, HystrixRequestVariable<?>>();
 
     private final HystrixRequestVariableLifecycle<T> lifeCycleMethods;
@@ -54,6 +56,7 @@ public class HystrixRequestVariableHolder<T> {
         RVCacheKey key = new RVCacheKey(this, concurrencyStrategy);
         HystrixRequestVariable<?> rvInstance = requestVariableInstance.get(key);
         if (rvInstance == null) {
+            // 创建 HystrixRequestVariable
             requestVariableInstance.putIfAbsent(key, concurrencyStrategy.getRequestVariable(lifeCycleMethods));
             /*
              * A safety check to help debug problems if someone starts injecting dynamically created HystrixConcurrencyStrategy instances - which should not be done and has no good reason to be done.

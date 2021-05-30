@@ -43,20 +43,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @param <R>
  */
 /* package */class CollapsedRequestSubject<T, R> implements CollapsedRequest<T, R> {
+    /**
+     * 参数
+     */
     private final R argument;
-
+    /**
+     * 结果( response ) 是否设置
+     */
     private AtomicBoolean valueSet = new AtomicBoolean(false);
+    /**
+     * 可回放的 ReplaySubject
+     */
     private final ReplaySubject<T> subject = ReplaySubject.create();
+    /**
+     * 带订阅数量的 ReplaySubject
+     */
     private final Observable<T> subjectWithAccounting;
-
+    /**
+     * 订阅数量
+     */
     private volatile int outstandingSubscriptions = 0;
 
     public CollapsedRequestSubject(final R arg, final RequestBatch<?, T, R> containingBatch) {
+        // 设置 argument
         if (arg == RequestCollapser.NULL_SENTINEL) {
             this.argument = null;
         } else {
             this.argument = arg;
         }
+        // 设置 带订阅数量的 ReplaySubject
         this.subjectWithAccounting = subject
                 .doOnSubscribe(new Action0() {
                     @Override

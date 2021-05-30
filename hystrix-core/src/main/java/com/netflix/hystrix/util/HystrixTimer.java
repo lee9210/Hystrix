@@ -37,7 +37,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HystrixTimer {
 
     private static final Logger logger = LoggerFactory.getLogger(HystrixTimer.class);
-
+    /**
+     * 单例
+     */
     private static HystrixTimer INSTANCE = new HystrixTimer();
 
     private HystrixTimer() {
@@ -120,6 +122,7 @@ public class HystrixTimer {
         public void clear() {
             super.clear();
             // stop this ScheduledFuture from any further executions
+            // 非强制
             f.cancel(false);
         }
 
@@ -133,6 +136,7 @@ public class HystrixTimer {
     protected void startThreadIfNeeded() {
         // create and start thread if one doesn't exist
         while (executor.get() == null || ! executor.get().isInitialized()) {
+            // CAS 保证有且只有一个初始化
             if (executor.compareAndSet(null, new ScheduledExecutor())) {
                 // initialize the executor that we 'won' setting
                 executor.get().initialize();
@@ -141,17 +145,23 @@ public class HystrixTimer {
     }
 
     /* package */ static class ScheduledExecutor {
+        /**
+         * 定时任务线程池执行器
+         */
         /* package */ volatile ScheduledThreadPoolExecutor executor;
+        /**
+         * 是否初始化
+         */
         private volatile boolean initialized;
 
         /**
          * We want this only done once when created in compareAndSet so use an initialize method
          */
         public void initialize() {
-
+            // coreSize
             HystrixPropertiesStrategy propertiesStrategy = HystrixPlugins.getInstance().getPropertiesStrategy();
             int coreSize = propertiesStrategy.getTimerThreadPoolProperties().getCorePoolSize().get();
-
+            // 创建 ThreadFactory
             ThreadFactory threadFactory = null;
             if (!PlatformSpecific.isAppEngineStandardEnvironment()) {
                 threadFactory = new ThreadFactory() {
@@ -168,8 +178,9 @@ public class HystrixTimer {
             } else {
                 threadFactory = PlatformSpecific.getAppEngineThreadFactory();
             }
-
+            // 创建 ScheduledThreadPoolExecutor
             executor = new ScheduledThreadPoolExecutor(coreSize, threadFactory);
+            // 已初始化
             initialized = true;
         }
 

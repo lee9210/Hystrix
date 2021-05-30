@@ -6,7 +6,13 @@ import rx.functions.Action0;
 import rx.subjects.ReplaySubject;
 
 public class HystrixCachedObservable<R> {
+    /**
+     * 订阅
+     */
     protected final Subscription originalSubscription;
+    /**
+     * 缓存 cachedObservable
+     */
     protected final Observable<R> cachedObservable;
     private volatile int outstandingSubscriptions = 0;
 

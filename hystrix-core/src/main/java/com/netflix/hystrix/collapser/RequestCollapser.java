@@ -85,11 +85,12 @@ public class RequestCollapser<BatchReturnType, ResponseType, RequestArgumentType
 
         // loop until succeed (compare-and-set spin-loop)
         while (true) {
+            // 获得 RequestBatch
             final RequestBatch<BatchReturnType, ResponseType, RequestArgumentType> b = batch.get();
             if (b == null) {
                 return Observable.error(new IllegalStateException("Submitting requests after collapser is shutdown"));
             }
-
+            // 添加到 RequestBatch
             final Observable<ResponseType> response;
             if (arg != null) {
                 response = b.offer(arg);
@@ -97,10 +98,12 @@ public class RequestCollapser<BatchReturnType, ResponseType, RequestArgumentType
                 response = b.offer( (RequestArgumentType) NULL_SENTINEL);
             }
             // it will always get an Observable unless we hit the max batch size
+            // 添加成功，返回 Observable
             if (response != null) {
                 return response;
             } else {
                 // this batch can't accept requests so create a new one and set it if another thread doesn't beat us
+                // 添加失败，执行 RequestBatch ，并创建新的 RequestBatch
                 createNewBatchAndExecutePreviousIfNeeded(b);
             }
         }

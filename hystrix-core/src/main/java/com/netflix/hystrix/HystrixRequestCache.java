@@ -75,12 +75,17 @@ public class HystrixRequestCache {
 
     private static HystrixRequestCache getInstance(RequestCacheKey rcKey, HystrixConcurrencyStrategy concurrencyStrategy) {
         HystrixRequestCache c = caches.get(rcKey);
+        // 不存在
         if (c == null) {
+            // 创建 HystrixRequestCache
             HystrixRequestCache newRequestCache = new HystrixRequestCache(rcKey, concurrencyStrategy);
+            // 添加 HystrixRequestCache
             HystrixRequestCache existing = caches.putIfAbsent(rcKey, newRequestCache);
+            // 添加成功
             if (existing == null) {
                 // we won so use the new one
                 c = newRequestCache;
+            // 添加失败
             } else {
                 // we lost so use the existing
                 c = existing;
@@ -97,13 +102,16 @@ public class HystrixRequestCache {
     // suppressing warnings because we are using a raw Future since it's in a heterogeneous ConcurrentHashMap cache
     @SuppressWarnings({ "unchecked" })
     /* package */<T> HystrixCachedObservable<T> get(String cacheKey) {
+        // 获得 ValueCacheKey
         ValueCacheKey key = getRequestCacheKey(cacheKey);
         if (key != null) {
+            // 获得 cacheInstance
             ConcurrentHashMap<ValueCacheKey, HystrixCachedObservable<?>> cacheInstance = requestVariableForCache.get(concurrencyStrategy);
             if (cacheInstance == null) {
                 throw new IllegalStateException("Request caching is not available. Maybe you need to initialize the HystrixRequestContext?");
             }
             /* look for the stored value */
+            // 获得 HystrixCachedObservable
             return (HystrixCachedObservable<T>) cacheInstance.get(key);
         }
         return null;
@@ -214,7 +222,13 @@ public class HystrixRequestCache {
     }
 
     private static class RequestCacheKey {
+        /**
+         * 类型
+         */
         private final short type; // used to differentiate between Collapser/Command if key is same between them
+        /**
+         * key
+         */
         private final String key;
         private final HystrixConcurrencyStrategy concurrencyStrategy;
 

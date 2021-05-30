@@ -32,6 +32,9 @@ import java.util.List;
 public class ExecutionResult {
     private final EventCounts eventCounts;
     private final Exception failedExecutionException;
+    /**
+     * 执行异常
+     */
     private final Exception executionException;
     private final long startTimestamp;
     private final int executionLatency; //time spent in run() method

@@ -100,16 +100,20 @@ public class RequestCollapserFactory<BatchReturnType, ResponseType, RequestArgum
 
     @SuppressWarnings("unchecked")
     private RequestCollapser<BatchReturnType, ResponseType, RequestArgumentType> getCollapserForGlobalScope(HystrixCollapserBridge<BatchReturnType, ResponseType, RequestArgumentType> commandCollapser) {
+        // 已存在
         RequestCollapser<?, ?, ?> collapser = globalScopedCollapsers.get(collapserKey.name());
         if (collapser != null) {
             return (RequestCollapser<BatchReturnType, ResponseType, RequestArgumentType>) collapser;
         }
         // create new collapser using 'this' first instance as the one that will get cached for future executions ('this' is stateless so we can do that)
+        // 不存在，进行创建
         RequestCollapser<BatchReturnType, ResponseType, RequestArgumentType> newCollapser = new RequestCollapser<BatchReturnType, ResponseType, RequestArgumentType>(commandCollapser, properties, timer, concurrencyStrategy);
         RequestCollapser<?, ?, ?> existing = globalScopedCollapsers.putIfAbsent(collapserKey.name(), newCollapser);
+        // 添加成功
         if (existing == null) {
             // we won
             return newCollapser;
+        // 添加失败，使用已存在的
         } else {
             // we lost ... another thread beat us
             // shutdown the one we created but didn't get stored

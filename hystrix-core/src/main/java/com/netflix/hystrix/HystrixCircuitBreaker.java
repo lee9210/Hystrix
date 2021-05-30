@@ -135,6 +135,7 @@ public interface HystrixCircuitBreaker {
             this.metrics = metrics;
         }
 
+        @Override
         public void markSuccess() {
             if (circuitOpen.get()) {
                 if (circuitOpen.compareAndSet(true, false)) {

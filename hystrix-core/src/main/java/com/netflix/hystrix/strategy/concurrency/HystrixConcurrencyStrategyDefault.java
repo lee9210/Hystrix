@@ -21,7 +21,9 @@ package com.netflix.hystrix.strategy.concurrency;
  * @ExcludeFromJavadoc
  */
 public class HystrixConcurrencyStrategyDefault extends HystrixConcurrencyStrategy {
-
+    /**
+     * 单例
+     */
     private static HystrixConcurrencyStrategyDefault INSTANCE = new HystrixConcurrencyStrategyDefault();
 
     public static HystrixConcurrencyStrategy getInstance() {

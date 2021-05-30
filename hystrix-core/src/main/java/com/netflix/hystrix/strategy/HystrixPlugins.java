@@ -165,6 +165,7 @@ public class HystrixPlugins {
         if (concurrencyStrategy.get() == null) {
             // check for an implementation from Archaius first
             Object impl = getPluginImplementation(HystrixConcurrencyStrategy.class);
+            // 使用 HystrixConcurrencyStrategyDefault
             if (impl == null) {
                 // nothing set via Archaius so initialize with default
                 concurrencyStrategy.compareAndSet(null, HystrixConcurrencyStrategyDefault.getInstance());
