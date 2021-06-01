@@ -432,6 +432,7 @@ public class HystrixCommandMetrics extends HystrixMetrics {
             return EMPTY;
         }
 
+        @Override
         public String toString() {
             return "HealthCounts[" + errorCount + " / " + totalCount + " : " + getErrorPercentage() + "%]";
         }

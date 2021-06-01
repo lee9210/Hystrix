@@ -119,6 +119,7 @@ public abstract class HystrixPropertiesChainedArchaiusProperty {
         /**
          * @return String
          */
+        @Override
         public String toString() {
             return getName() + " = " + get();
         }

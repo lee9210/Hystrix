@@ -139,6 +139,7 @@ public class HystrixMetricsPoller {
      */
     @SuppressWarnings("unused")
     private final Object finalizerGuardian = new Object() {
+        @Override
         protected void finalize() throws Throwable {
             if (!executor.isShutdown()) {
                 logger.warn("{} was not shutdown. Caught in Finalize Guardian and shutting down.", HystrixMetricsPoller.class.getSimpleName());
@@ -517,6 +518,7 @@ public class HystrixMetricsPoller {
 
         private final ThreadFactory defaultFactory = Executors.defaultThreadFactory();
 
+        @Override
         public Thread newThread(Runnable r) {
             Thread thread = defaultFactory.newThread(r);
             thread.setName(MetricsThreadName);

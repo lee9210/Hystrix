@@ -47,6 +47,7 @@ import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
  * </pre>
  */
 public class HystrixRequestContextServletFilter implements Filter {
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HystrixRequestContext context = HystrixRequestContext.initializeContext();
         try {

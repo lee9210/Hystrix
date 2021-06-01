@@ -70,6 +70,7 @@ public class HystrixRequestVariableDefault<T> implements HystrixRequestVariable<
      * @return the value of the variable for the current request,
      *         or null if no value has been set and there is no initial value
      */
+    @Override
     @SuppressWarnings("unchecked")
     public T get() {
         if (HystrixRequestContext.getContextForCurrentThread() == null) {
@@ -118,6 +119,7 @@ public class HystrixRequestVariableDefault<T> implements HystrixRequestVariable<
      * 
      * @return initial value of the HystrixRequestVariable to use for the instance being constructed
      */
+    @Override
     public T initialValue() {
         return null;
     }
@@ -171,6 +173,7 @@ public class HystrixRequestVariableDefault<T> implements HystrixRequestVariable<
      * @param value
      *            the value of the HystrixRequestVariable being removed
      */
+    @Override
     public void shutdown(T value) {
         // do nothing by default
     }

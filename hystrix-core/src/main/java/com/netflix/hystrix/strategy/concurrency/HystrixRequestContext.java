@@ -151,6 +151,7 @@ public class HystrixRequestContext implements Closeable {
      *
      * This method invokes <code>shutdown()</code>
      */
+    @Override
     public void close() {
       shutdown();
     }

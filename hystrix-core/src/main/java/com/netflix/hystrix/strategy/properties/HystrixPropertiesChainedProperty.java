@@ -120,6 +120,7 @@ public abstract class HystrixPropertiesChainedProperty {
         /**
          * @return String
          */
+        @Override
         public String toString() {
             return getName() + " = " + get();
         }

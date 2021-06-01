@@ -69,6 +69,7 @@ public class HystrixCollapserEventStream implements HystrixEventStream<HystrixCo
         writeOnlyStream.onNext(event);
     }
 
+    @Override
     public Observable<HystrixCollapserEvent> observe() {
         return readOnlyStream;
     }

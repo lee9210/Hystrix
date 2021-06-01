@@ -393,6 +393,7 @@ public abstract class HystrixObservableCollapser<K, BatchReturnType, ResponseTyp
      * @return {@code Observable<R>} that executes and calls back with the result of of {@link HystrixCommand}{@code <BatchReturnType>} execution after mapping
      *         the {@code <BatchReturnType>} into {@code <ResponseType>}
      */
+    @Override
     public Observable<ResponseType> observe() {
         // use a ReplaySubject to buffer the eagerly subscribed-to Observable
         ReplaySubject<ResponseType> subject = ReplaySubject.create();
@@ -422,6 +423,7 @@ public abstract class HystrixObservableCollapser<K, BatchReturnType, ResponseTyp
      * @return {@code Observable<R>} that lazily executes and calls back with the result of of {@link HystrixCommand}{@code <BatchReturnType>} execution after mapping the
      * {@code <BatchReturnType>} into {@code <ResponseType>}
      */
+    @Override
     public Observable<ResponseType> toObservable() {
         // when we callback with the data we want to do the work
         // on a separate thread than the one giving us the callback

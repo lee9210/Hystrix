@@ -355,6 +355,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * @throws IllegalStateException
      *             if invoked more than once
      */
+    @Override
     public Observable<R> observe() {
         // us a ReplaySubject to buffer the eagerly subscribed-to Observable
         ReplaySubject<R> subject = ReplaySubject.create();
@@ -395,6 +396,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * @throws IllegalStateException
      *             if invoked more than once
      */
+    @Override
     public Observable<R> toObservable() {
         final AbstractCommand<R> _cmd = this;
 
@@ -1415,6 +1417,7 @@ import java.util.concurrent.atomic.AtomicReference;
      *         The {@link HystrixCommandGroupKey} is used to represent a common relationship between commands. For example, a library or team name, the system all related commands interace with,
      *         common business purpose etc.
      */
+    @Override
     public HystrixCommandGroupKey getCommandGroup() {
         return commandGroup;
     }
@@ -1422,6 +1425,7 @@ import java.util.concurrent.atomic.AtomicReference;
     /**
      * @return {@link HystrixCommandKey} identifying this command instance for statistics, circuit-breaker, properties, etc.
      */
+    @Override
     public HystrixCommandKey getCommandKey() {
         return commandKey;
     }
@@ -1430,6 +1434,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * @return {@link HystrixThreadPoolKey} identifying which thread-pool this command uses (when configured to run on separate threads via
      *         {@link HystrixCommandProperties#executionIsolationStrategy()}).
      */
+    @Override
     public HystrixThreadPoolKey getThreadPoolKey() {
         return threadPoolKey;
     }
@@ -1443,6 +1448,7 @@ import java.util.concurrent.atomic.AtomicReference;
      *
      * @return HystrixCommandMetrics
      */
+    @Override
     public HystrixCommandMetrics getMetrics() {
         return metrics;
     }
@@ -1452,6 +1458,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return HystrixCommandProperties
      */
+    @Override
     public HystrixCommandProperties getProperties() {
         return properties;
     }
@@ -1837,6 +1844,7 @@ import java.util.concurrent.atomic.AtomicReference;
         return null;
     }
 
+    @Override
     public String getPublicCacheKey() {
         return getCacheKey();
     }
@@ -1866,6 +1874,7 @@ import java.util.concurrent.atomic.AtomicReference;
      *
      * @return boolean
      */
+    @Override
     public boolean isCircuitBreakerOpen() {
         return properties.circuitBreakerForceOpen().get() || (!properties.circuitBreakerForceClosed().get() && circuitBreaker.isOpen());
     }
@@ -1875,6 +1884,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isExecutionComplete() {
         return commandState.get() == CommandState.TERMINAL;
     }
@@ -1888,6 +1898,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isExecutedInThread() {
         return getCommandResult().isExecutedInThread();
     }
@@ -1897,6 +1908,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isSuccessfulExecution() {
         return getCommandResult().getEventCounts().contains(HystrixEventType.SUCCESS);
     }
@@ -1906,6 +1918,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isFailedExecution() {
         return getCommandResult().getEventCounts().contains(HystrixEventType.FAILURE);
     }
@@ -1919,6 +1932,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return Throwable or null
      */
+    @Override
     public Throwable getFailedExecutionException() {
         return executionResult.getException();
     }
@@ -1949,6 +1963,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isResponseFromFallback() {
         return getCommandResult().getEventCounts().contains(HystrixEventType.FALLBACK_SUCCESS);
     }
@@ -1959,6 +1974,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isResponseTimedOut() {
         return getCommandResult().getEventCounts().contains(HystrixEventType.TIMEOUT);
     }
@@ -1969,6 +1985,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isResponseShortCircuited() {
         return getCommandResult().getEventCounts().contains(HystrixEventType.SHORT_CIRCUITED);
     }
@@ -1978,6 +1995,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return boolean
      */
+    @Override
     public boolean isResponseFromCache() {
         return isResponseFromCache;
     }
@@ -1987,6 +2005,7 @@ import java.util.concurrent.atomic.AtomicReference;
      *
      * @return boolean
      */
+    @Override
     public boolean isResponseSemaphoreRejected() {
         return getCommandResult().isResponseSemaphoreRejected();
     }
@@ -1996,6 +2015,7 @@ import java.util.concurrent.atomic.AtomicReference;
      *
      * @return boolean
      */
+    @Override
     public boolean isResponseThreadPoolRejected() {
         return getCommandResult().isResponseThreadPoolRejected();
     }
@@ -2005,6 +2025,7 @@ import java.util.concurrent.atomic.AtomicReference;
      *
      * @return boolean
      */
+    @Override
     public boolean isResponseRejected() {
         return getCommandResult().isResponseRejected();
     }
@@ -2016,6 +2037,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return {@code List<HystrixEventType>}
      */
+    @Override
     public List<HystrixEventType> getExecutionEvents() {
         return getCommandResult().getOrderedList();
     }
@@ -2068,6 +2090,7 @@ import java.util.concurrent.atomic.AtomicReference;
      * 
      * @return int
      */
+    @Override
     public int getExecutionTimeInMilliseconds() {
         return getCommandResult().getExecutionLatency();
     }
@@ -2078,6 +2101,7 @@ import java.util.concurrent.atomic.AtomicReference;
       *
       * @return long
      */
+    @Override
     public long getCommandRunStartTimeInNanos() {
         return executionResult.getCommandRunStartTimeInNanos();
     }

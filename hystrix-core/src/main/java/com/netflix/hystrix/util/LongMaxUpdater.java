@@ -52,6 +52,7 @@ public class LongMaxUpdater extends Striped64 implements Serializable {
     /**
      * Version of max for use in retryUpdate
      */
+    @Override
     final long fn(long v, long x) { return v > x ? v : x; }
 
     /**
@@ -149,6 +150,7 @@ public class LongMaxUpdater extends Striped64 implements Serializable {
      * Returns the String representation of the {@link #max}.
      * @return the String representation of the {@link #max}
      */
+    @Override
     public String toString() {
         return Long.toString(max());
     }
@@ -158,6 +160,7 @@ public class LongMaxUpdater extends Striped64 implements Serializable {
      *
      * @return the maximum
      */
+    @Override
     public long longValue() {
         return max();
     }
@@ -166,6 +169,7 @@ public class LongMaxUpdater extends Striped64 implements Serializable {
      * Returns the {@link #max} as an {@code int} after a narrowing
      * primitive conversion.
      */
+    @Override
     public int intValue() {
         return (int)max();
     }
@@ -174,6 +178,7 @@ public class LongMaxUpdater extends Striped64 implements Serializable {
      * Returns the {@link #max} as a {@code float}
      * after a widening primitive conversion.
      */
+    @Override
     public float floatValue() {
         return (float)max();
     }
@@ -182,6 +187,7 @@ public class LongMaxUpdater extends Striped64 implements Serializable {
      * Returns the {@link #max} as a {@code double} after a widening
      * primitive conversion.
      */
+    @Override
     public double doubleValue() {
         return (double)max();
     }

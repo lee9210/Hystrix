@@ -58,6 +58,7 @@ import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 public class HystrixRequestLogViaResponseHeaderServletFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(HystrixRequestLogViaResponseHeaderServletFilter.class);
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             chain.doFilter(request, response);

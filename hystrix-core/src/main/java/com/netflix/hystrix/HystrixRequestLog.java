@@ -56,6 +56,7 @@ public class HystrixRequestLog {
             return new HystrixRequestLog();
         }
 
+        @Override
         public void shutdown(HystrixRequestLog value) {
             //write this value to the Request stream
             HystrixRequestEventsStream.getInstance().write(value.getAllExecutedCommands());
